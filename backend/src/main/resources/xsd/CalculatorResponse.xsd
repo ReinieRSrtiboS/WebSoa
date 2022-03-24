@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.cofano.nl/api/events/calculatorresponse"
+           xmlns="http://www.cofano.nl/api/events/calculatorresponse"
+           elementFormDefault="qualified">
+
+    <xs:element name="CalculatorResponse">
+        <xs:annotation>
+            <xs:documentation>
+                The result from the calcuation
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="number1" type="xs:double"/>
+                <xs:element name="number2" type="xs:double"/>
+                <xs:element name="result" type="xs:double"/>
+                <xs:element name="calculationString" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
