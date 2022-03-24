@@ -29,6 +29,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework:spring-web:5.2.2.RELEASE'
     compile('org.springframework.boot:spring-boot-starter-activemq')
     compile('org.springframework:spring-oxm:5.0.7.RELEASE')
 
