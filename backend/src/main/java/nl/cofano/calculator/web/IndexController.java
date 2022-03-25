@@ -37,4 +37,9 @@ public class IndexController {
         Ticket ticket = ticketService.getTicket(id);
         return new ResponseEntity<>(ticket, HttpStatus.OK);
     }
+
+    @GetMapping("/tickets/{amount}/{id}")
+    public ResponseEntity<Boolean> newTickets(@PathVariable("amount") int amount, @PathVariable("id") int eventId){
+        return ticketService.newTickets(amount, eventId);
+    }
 }
