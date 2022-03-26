@@ -8,4 +8,10 @@ services:
       - "61616:61616"
 
   payment-service:
-    build: ./payment-service/
+    build:
+      dockerfile: ./payment-service/Dockerfile
+      context: ./
+    ports:
+      - "8080"
+    depends_on:
+      - active-mq
