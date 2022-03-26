@@ -6,3 +6,6 @@ services:
     ports:
       - "8161:8161"
       - "61616:61616"
+
+  payment-service:
+    build: ./payment-service/

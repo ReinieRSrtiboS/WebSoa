@@ -1,3 +1,4 @@
-rootProject.name = 'calculator-app'
+rootProject.name = 'event-system'
 
-include 'backend'
+//include 'backend'
+include 'payment-service'
