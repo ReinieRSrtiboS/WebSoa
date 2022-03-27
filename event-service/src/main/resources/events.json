@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Kick-In",
+    "price": 70.00,
+    "tickets": 2000
+  },
+  {
+    "id": 2,
+    "name": "BEATable",
+    "price": 15.00,
+    "tickets": 500
+  },
+  {
+    "id": 3,
+    "name": "Hutspot",
+    "price": 35.00,
+    "tickets": 250
+  },
+  {
+    "id": 4,
+    "name": "Bevrijdingsfestival",
+    "price": 5.00,
+    "tickets": 750
+  }
+]
