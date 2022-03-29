@@ -10,10 +10,7 @@ import websoa.ticket.daos.TicketInfo;
 
 import javax.annotation.PostConstruct;
 import java.io.InputStreamReader;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -37,13 +34,16 @@ public class TicketRegistry {
     }
 
     public Optional<Collection<TicketInfo>> event_tickets(String event_id) { // TODO kan vast in 1 regel, maar niet door mij
-        Collection<TicketInfo> result = null;
+        Collection<TicketInfo> result = new ArrayList<>();
         for (TicketInfo ticket : tickets.values()) {
             if (event_id.equals(ticket.event_id)) {
                 result.add(ticket);
             }
         }
-        return Optional.ofNullable(result);
+        if (result.size() == 0) { // TODO dit is echt lelijke code, excuses
+            return Optional.empty();
+        }
+        return Optional.of(result);
     }
 
     public Optional<TicketInfo> ticket(String id) {

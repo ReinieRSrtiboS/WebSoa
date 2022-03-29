@@ -17,7 +17,7 @@ public class TicketController {
     @Autowired
     private TicketRegistry registry;
 
-    @GetMapping("/tickets/{event_id}") // TODO misschien andere naam, dit kan colliden met specifieke ticket opvragen
+    @GetMapping("/tickets/{event_id}")
     public Collection<TicketInfo> event_tickets(@PathVariable String event_id) {
         Optional<Collection<TicketInfo>> tickets = this.registry.event_tickets(event_id);
         if (tickets.isPresent()) return tickets.get();
