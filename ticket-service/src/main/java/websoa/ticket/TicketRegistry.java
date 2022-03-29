@@ -40,10 +40,7 @@ public class TicketRegistry {
                 result.add(ticket);
             }
         }
-        if (result.size() == 0) { // TODO dit is echt lelijke code, excuses
-            return Optional.empty();
-        }
-        return Optional.of(result);
+        return (result.size() == 0) ? Optional.empty() : Optional.of(result); // TODO is al iets mooier maar nog steeds lelijke code
     }
 
     public Optional<TicketInfo> ticket(String id) {
