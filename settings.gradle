@@ -3,3 +3,5 @@ rootProject.name = 'event-system'
 //include 'backend'
 include 'event-service'
 include 'payment-service'
+include 'ticket-service'
+
