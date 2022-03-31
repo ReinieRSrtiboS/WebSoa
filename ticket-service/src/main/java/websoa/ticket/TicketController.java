@@ -29,6 +29,6 @@ public class TicketController {
     public TicketInfo ticket(@PathVariable String id) {
         Optional<TicketInfo> ticket = this.registry.ticket(id);
         if (ticket.isPresent()) return ticket.get();
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found");
     }
 }
