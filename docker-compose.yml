@@ -22,3 +22,26 @@ services:
       - "8080"
     depends_on:
       - active-mq
+
+  ticket-service:
+    build:
+      dockerfile: ./ticket-service/Dockerfile
+      context: ./
+    ports:
+      - "8080"
+
+  user-service:
+    build:
+      dockerfile: ./user-service/Dockerfile
+      context: ./
+    ports:
+      - "8080"
+
+  validation-service:
+    build:
+      dockerfile: ./validation-service/Dockerfile
+      context: ./
+    ports:
+      - "8080"
+    depends_on:
+      - ticket-service

@@ -11,7 +11,7 @@ COPY ./settings.gradle /websoa/
 RUN chmod u+x ./gradlew
 
 # Add & compile service
-COPY ./event-service/ /websoa/
-RUN /bin/sh /websoa/gradlew bootJar
+COPY ./valdation-service/ /websoa/
+RUN ./gradlew bootJar
 
 CMD java -jar build/libs/*.jar

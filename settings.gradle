@@ -5,4 +5,5 @@ include 'event-service'
 include 'payment-service'
 include 'ticket-service'
 include 'user-service'
+include 'validation-service'
 
