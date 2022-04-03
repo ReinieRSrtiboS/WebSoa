@@ -1,6 +1,6 @@
 package websoa.payment;
 
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
@@ -8,10 +8,9 @@ import org.springframework.stereotype.Component;
 import websoa.payment.daos.PaymentRequest;
 import websoa.payment.daos.PaymentResponse;
 
+@Slf4j
 @Component
 public class QueueReceiver {
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(QueueReceiver.class);
-
     @Autowired
     private JmsTemplate template;
 

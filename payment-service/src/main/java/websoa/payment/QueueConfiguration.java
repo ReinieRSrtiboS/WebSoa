@@ -1,7 +1,7 @@
 package websoa.payment;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,11 +16,10 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 import java.util.Collections;
 
+@Slf4j
 @EnableJms
 @Configuration
 public class QueueConfiguration {
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(QueueConfiguration.class);
-
     @Value("${activemq.broker.url}")
     private String url;
 
