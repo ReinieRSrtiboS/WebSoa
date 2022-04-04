@@ -19,6 +19,7 @@ public class TicketRegistry {
     @Value("classpath:tickets.json")
     private Resource dataFile;
 
+    private Map<String, List<TicketInfo>> eventTickets = new HashMap<>();
     private Map<String, TicketInfo> tickets;
 
     @PostConstruct
@@ -30,17 +31,13 @@ public class TicketRegistry {
         this.tickets = new HashMap<>(tickets.length);
         for (TicketInfo ticket : tickets) {
             this.tickets.put(ticket.id, ticket);
+            this.eventTickets.putIfAbsent(ticket.event_id, new ArrayList<>(1));
+            this.eventTickets.get(ticket.event_id).add(ticket);
         }
     }
 
-    public Optional<Collection<TicketInfo>> event_tickets(String event_id) { // TODO kan vast in 1 regel, maar niet door mij
-        Collection<TicketInfo> result = new ArrayList<>();
-        for (TicketInfo ticket : tickets.values()) {
-            if (event_id.equals(ticket.event_id)) {
-                result.add(ticket);
-            }
-        }
-        return (result.size() == 0) ? Optional.empty() : Optional.of(result); // TODO is al iets mooier maar nog steeds lelijke code
+    public Optional<Collection<TicketInfo>> event_tickets(String event_id) {
+        return Optional.ofNullable(this.eventTickets.get(event_id));
     }
 
     public Optional<TicketInfo> ticket(String id) {
