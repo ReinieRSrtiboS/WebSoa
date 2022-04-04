@@ -1,8 +1,20 @@
 [
   {
     "id": 1,
-    "name": "Henk",
-    "email": "Henk@Henk.com",
+    "name": "Luis",
+    "email": "luis@websoa.ut",
     "phone": "0641414141"
+  },
+  {
+    "id": 2,
+    "name": "Joao",
+    "email": "joao@websoa.ut",
+    "phone": "0642424242"
+  },
+  {
+    "id": 3,
+    "name": "Leon",
+    "email": "leon@websoa.ut",
+    "phone": "0643434343"
   }
 ]
