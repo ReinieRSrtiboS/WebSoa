@@ -13,6 +13,11 @@ services:
       context: ./
     ports:
       - "8080"
+    depends_on:
+      - event-service
+      - ticket-service
+      - user-service
+      - mailhog
 
   event-service:
     build:
