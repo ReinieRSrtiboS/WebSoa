@@ -23,8 +23,7 @@ public class EventController {
 
     @GetMapping("/events/{id}")
     public Event event(@PathVariable String id) {
-        Optional<Event> event = this.registry.event(id);
-        if (event.isPresent()) return event.get();
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
+        return this.registry.event(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
     }
 }

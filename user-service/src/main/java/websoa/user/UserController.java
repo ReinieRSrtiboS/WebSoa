@@ -18,8 +18,7 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     public User user(@PathVariable String id) {
-        Optional<User> user = this.registry.user(id);
-        if (user.isPresent()) return user.get();
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        return this.registry.user(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 }

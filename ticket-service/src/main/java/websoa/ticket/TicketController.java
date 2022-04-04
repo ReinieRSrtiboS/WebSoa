@@ -19,16 +19,14 @@ public class TicketController {
 
     @GetMapping("/tickets/{event_id}")
     public Collection<TicketInfo> event_tickets(@PathVariable String event_id) {
-        Optional<Collection<TicketInfo>> tickets = this.registry.event_tickets(event_id);
-        if (tickets.isPresent()) return tickets.get();
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
+        return this.registry.event_tickets(event_id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
 
     }
 
     @GetMapping("/ticket/{id}")
     public TicketInfo ticket(@PathVariable String id) {
-        Optional<TicketInfo> ticket = this.registry.ticket(id);
-        if (ticket.isPresent()) return ticket.get();
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found");
+        return this.registry.ticket(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found"));
     }
 }
