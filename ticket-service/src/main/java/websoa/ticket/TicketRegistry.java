@@ -43,4 +43,9 @@ public class TicketRegistry {
     public Optional<TicketInfo> ticket(String id) {
         return Optional.ofNullable(tickets.get(id));
     }
+
+    public void activate(String ticket_id) { // Wordt nu niet lange termijn opgeslagen maar dat is TODO
+        TicketInfo ticket = this.tickets.get(ticket_id);
+        ticket.activated = true;
+    }
 }
