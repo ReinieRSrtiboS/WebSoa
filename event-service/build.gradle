@@ -34,6 +34,7 @@ dependencies {
     implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.0'
     implementation 'org.projectlombok:lombok:1.18.20'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.thymeleaf:thymeleaf:3.1.0.M1'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 }
