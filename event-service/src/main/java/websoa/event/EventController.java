@@ -59,9 +59,9 @@ public class EventController {
 
         RestTemplate rest = new RestTemplate();
         TicketInfo[] result = rest.getForObject("http://ticket-service/tickets/" + event_id, TicketInfo[].class);
-//        int[] result = {1, 2, 3};
 
         context.setVariable("tickets", result.length);
+        context.setVariable("price", this.registry.event(event_id).get().price);
         template.process("buy-tickets", context, writer);
         return writer.toString();
     }
