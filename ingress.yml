@@ -1,0 +1,59 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-example
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+    - http:
+        paths:
+#          - path: /active-mq/(.*)
+#            pathType: Exact
+#            backend:
+#              service:
+#                name: active-mq-service
+#                port:
+#                  number: 80
+          - path: /distribution/(.*)
+            pathType: Exact
+            backend:
+              service:
+                name: distribution-service
+                port:
+                  number: 80
+          - path: /events/(.*)
+            pathType: Exact
+            backend:
+              service:
+                name: event-service
+                port:
+                  number: 80
+          - path: /payment/(.*)
+            pathType: Exact
+            backend:
+              service:
+                name: payment-service
+                port:
+                  number: 80
+          - path: /ticket/(.*)
+            pathType: Exact
+            backend:
+              service:
+                name: ticket-service
+                port:
+                  number: 80
+          - path: /user/(.*)
+            pathType: Exact
+            backend:
+              service:
+                name: user-service
+                port:
+                  number: 80
+          - path: /validation/(.*)
+            pathType: Exact
+            backend:
+              service:
+                name: validation-service
+                port:
+                  number: 80

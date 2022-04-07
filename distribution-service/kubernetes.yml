@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: distribution-deployment
+  labels:
+    app: event-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-system
+      service: distribution
+  template:
+    metadata:
+      labels:
+        app: event-system
+        service: distribution
+    spec:
+      containers:
+        - name: distribution-deployment
+          image: websoa-distribution-service
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: distribution-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    service: distribution
