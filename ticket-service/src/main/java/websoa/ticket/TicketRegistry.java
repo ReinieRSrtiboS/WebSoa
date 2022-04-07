@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import sun.security.krb5.internal.Ticket;
 import websoa.ticket.daos.TicketInfo;
 
 import javax.annotation.PostConstruct;
@@ -47,6 +49,19 @@ public class TicketRegistry {
     public void activate(String ticket_id) { // Wordt nu niet lange termijn opgeslagen maar dat is TODO
         TicketInfo ticket = this.tickets.get(ticket_id);
         ticket.activated = true;
+    }
+
+    public HttpStatus new_event(String event_id, float price, int amount) {
+        if (eventTickets.containsKey(event_id)) {
+            return HttpStatus.CONFLICT;
+        }
+        eventTickets.putIfAbsent(event_id, new ArrayList<>(1));
+        for (int i = tickets.size(); i < tickets.size() + amount; i++) {
+            TicketInfo ticket = new TicketInfo(event_id, price, String.valueOf(i + 1));
+            tickets.put(String.valueOf(i + 1), ticket);
+            this.eventTickets.get(event_id).add(ticket);
+        }
+        return HttpStatus.OK;
     }
 
     public boolean reserve(String event_id, int amount) {
