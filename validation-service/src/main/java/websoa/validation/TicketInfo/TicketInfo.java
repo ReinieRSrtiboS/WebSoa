@@ -5,6 +5,7 @@ public class TicketInfo {
     public String event_id;
     public String user_id;
     public boolean bought;
+    public boolean reserved;
     public boolean activated;
     public float price;
 }
