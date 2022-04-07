@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-deployment
+  labels:
+    app: event-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-system
+      service: ticket
+  template:
+    metadata:
+      labels:
+        app: event-system
+        service: ticket
+    spec:
+      containers:
+        - name: ticket-deployment
+          image: websoa-ticket-service
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticket-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    service: ticket

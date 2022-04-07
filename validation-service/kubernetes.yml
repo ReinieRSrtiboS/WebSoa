@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: validation-deployment
+  labels:
+    app: event-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-system
+      service: validation
+  template:
+    metadata:
+      labels:
+        app: event-system
+        service: validation
+    spec:
+      containers:
+        - name: validation-deployment
+          image: websoa-validation-service
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: validation-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    service: validation

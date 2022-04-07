@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-deployment
+  labels:
+    app: event-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-system
+      service: payment
+  template:
+    metadata:
+      labels:
+        app: event-system
+        service: payment
+    spec:
+      containers:
+        - name: payment-deployment
+          image: websoa-payment-service
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    service: payment
