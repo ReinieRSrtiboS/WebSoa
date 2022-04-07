@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
@@ -36,12 +37,6 @@ public class EventController {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
     }
 
-//    @GetMapping("/")
-//    public String showEvents(Model model) {
-//        model.addAttribute("events", registry.events());
-//        return "show-events";
-//    }
-    // Methode hierboven werkte niet dus heb het zo maar gedaan
     @GetMapping("/")
     public String showEvents(Model model) { // TODO get available tickets instead of all of bedenk een loop erom heen
     StringWriter writer = new StringWriter();
@@ -58,11 +53,22 @@ public class EventController {
         Context context = new Context();
 
         RestTemplate rest = new RestTemplate();
-        TicketInfo[] result = rest.getForObject("http://ticket-service/tickets/" + event_id, TicketInfo[].class);
+//        TicketInfo[] result = rest.getForObject("http://ticket-service/tickets/" + event_id, TicketInfo[].class);
+//
+//        context.setVariable("tickets", result.length);
+//        context.setVariable("price", this.registry.event(event_id).get().price);
 
-        context.setVariable("tickets", result.length);
-        context.setVariable("price", this.registry.event(event_id).get().price);
+        context.setVariable("tickets", 25);
+        context.setVariable("price", 41.00);
+
+        context.setVariable("id", event_id);
         template.process("buy-tickets", context, writer);
         return writer.toString();
+    }
+
+    @GetMapping("/buy/{event}")
+    public String buy(@PathVariable String event, @RequestParam int tickets) {
+        // TODO actually buy tickets
+        return "Ja dit moet nog gebeuren " + tickets;
     }
 }
