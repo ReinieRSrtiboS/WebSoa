@@ -1,7 +1,10 @@
 package websoa.event;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +19,7 @@ import websoa.event.daos.TicketInfo;
 
 import java.io.StringWriter;
 import java.util.Collection;
+import java.util.HashMap;
 
 @RestController
 public class EventController {
@@ -68,9 +72,17 @@ public class EventController {
 
     @GetMapping("/buy/{event}")
     public String buy(@PathVariable String event, @RequestParam int tickets) {
-        // TODO actually buy tickets
-        String name = this.registry.event(event).get().name;
-        return "You have successfully reserved " + tickets + " for " + name + ". \r\n" +
-            "When you have paid, the tickets will be send to you per email";
+
+        RestTemplate rest = new RestTemplate();
+        ResponseEntity<HttpStatus> answer = rest.exchange("http://ticket-service/reserve/" + event + "/" + tickets, HttpMethod.PUT, new HttpEntity<>(HttpStatus.OK), HttpStatus.class);
+
+        if (answer.getStatusCode().is2xxSuccessful()) {
+            String name = this.registry.event(event).get().name;
+            return "You have successfully reserved " + tickets + " for " + name + ". \r\n" +
+                "After you have paid, the tickets will be send to you per email";
+        } else { // TODO make custom errors ofzo
+            return "Something went wrong";
+        }
+
     }
 }

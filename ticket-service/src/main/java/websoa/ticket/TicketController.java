@@ -2,6 +2,7 @@ package websoa.ticket;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import websoa.ticket.daos.TicketInfo;
@@ -32,5 +33,11 @@ public class TicketController {
     public HttpStatus validate(@PathVariable String ticket_id) {
         this.registry.activate(ticket_id);
         return HttpStatus.OK;
+    }
+
+    @PutMapping("/reserve/{event_id}/{amount}")
+    public ResponseEntity<HttpStatus> reserve(@PathVariable String event_id, @PathVariable int amount) {
+        // TODO reserve tickets
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
