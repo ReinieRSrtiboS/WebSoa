@@ -53,13 +53,13 @@ public class EventController {
         Context context = new Context();
 
         RestTemplate rest = new RestTemplate();
-//        TicketInfo[] result = rest.getForObject("http://ticket-service/tickets/" + event_id, TicketInfo[].class);
-//
-//        context.setVariable("tickets", result.length);
-//        context.setVariable("price", this.registry.event(event_id).get().price);
+        TicketInfo[] result = rest.getForObject("http://ticket-service/tickets/" + event_id, TicketInfo[].class);
 
-        context.setVariable("tickets", 25);
-        context.setVariable("price", 41.00);
+        context.setVariable("tickets", result.length);
+        context.setVariable("price", this.registry.event(event_id).get().price);
+
+//        context.setVariable("tickets", 25);
+//        context.setVariable("price", 41.00);
 
         context.setVariable("event", this.registry.event(event_id).get());
         template.process("buy-tickets", context, writer);
@@ -69,6 +69,8 @@ public class EventController {
     @GetMapping("/buy/{event}")
     public String buy(@PathVariable String event, @RequestParam int tickets) {
         // TODO actually buy tickets
-        return "Ja dit moet nog gebeuren " + tickets;
+        String name = this.registry.event(event).get().name;
+        return "You have successfully reserved " + tickets + " for " + name + ". \r\n" +
+            "When you have paid, the tickets will be send to you per email";
     }
 }
