@@ -9,7 +9,7 @@ import websoa.validation.TicketInfo.TicketInfo;
 @Service
 public class ValidationRegistry {
 
-    public boolean validate(String ticket_id, String user_id) {
+    public boolean validate(String ticket_id, String user_id) { // TODO make 1 call to ticket service
         RestTemplate rest = new RestTemplate();
         TicketInfo result = rest.getForObject("http://ticket-service/ticket/" + ticket_id, TicketInfo.class);
         if (user_id.equals(result.user_id) && !result.activated) {
