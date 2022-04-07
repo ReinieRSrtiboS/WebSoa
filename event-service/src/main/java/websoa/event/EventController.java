@@ -61,7 +61,7 @@ public class EventController {
         context.setVariable("tickets", 25);
         context.setVariable("price", 41.00);
 
-        context.setVariable("id", event_id);
+        context.setVariable("event", this.registry.event(event_id).get());
         template.process("buy-tickets", context, writer);
         return writer.toString();
     }
