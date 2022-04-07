@@ -62,9 +62,6 @@ public class EventController {
         context.setVariable("tickets", result.length);
         context.setVariable("price", this.registry.event(event_id).get().price);
 
-//        context.setVariable("tickets", 25);
-//        context.setVariable("price", 41.00);
-
         context.setVariable("event", this.registry.event(event_id).get());
         template.process("buy-tickets", context, writer);
         return writer.toString();
@@ -79,10 +76,9 @@ public class EventController {
         if (answer.getStatusCode().is2xxSuccessful()) {
             String name = this.registry.event(event).get().name;
             return "You have successfully reserved " + tickets + " for " + name + ". \r\n" +
-                "After you have paid, the tickets will be send to you per email";
-        } else { // TODO make custom errors ofzo
-            return "Something went wrong";
+                "After you have paid, the tickets will be sent to you per email";
+        } else {
+            return answer.getStatusCode().toString();
         }
-
     }
 }

@@ -48,4 +48,24 @@ public class TicketRegistry {
         TicketInfo ticket = this.tickets.get(ticket_id);
         ticket.activated = true;
     }
+
+    public boolean reserve(String event_id, int amount) {
+        List<TicketInfo> tickets = this.eventTickets.get(event_id);
+        int reserved_no = 0;
+        List<TicketInfo> reserve = new ArrayList<>();
+        for (TicketInfo ticket : tickets) {
+            if (!ticket.reserved) {
+                ticket.reserved = true;
+                reserve.add(ticket);
+                reserved_no++;
+                if (reserved_no == amount) {
+                    return true;
+                }
+            }
+        }
+        for (TicketInfo ticket : reserve) {
+            ticket.reserved = false;
+        }
+        return false;
+    }
 }

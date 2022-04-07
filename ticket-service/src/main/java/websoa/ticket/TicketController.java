@@ -37,7 +37,10 @@ public class TicketController {
 
     @PutMapping("/reserve/{event_id}/{amount}")
     public ResponseEntity<HttpStatus> reserve(@PathVariable String event_id, @PathVariable int amount) {
-        // TODO reserve tickets
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (this.registry.reserve(event_id, amount)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 }
