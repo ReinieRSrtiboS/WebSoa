@@ -60,8 +60,6 @@ public class EventController {
         TicketInfo[] result = rest.getForObject("http://ticket-service/tickets/" + event_id, TicketInfo[].class);
 
         context.setVariable("tickets", result.length);
-        context.setVariable("price", this.registry.event(event_id).get().price);
-
         context.setVariable("event", this.registry.event(event_id).get());
         template.process("buy-tickets", context, writer);
         return writer.toString();
@@ -75,7 +73,7 @@ public class EventController {
 
         if (answer.getStatusCode().is2xxSuccessful()) {
             String name = this.registry.event(event).get().name;
-            return "You have successfully reserved " + tickets + " for " + name + ". \r\n" +
+            return "You have successfully reserved " + tickets + " tickets for " + name + ". \r\n" +
                 "After you have paid, the tickets will be sent to you per email";
         } else {
             return answer.getStatusCode().toString();
