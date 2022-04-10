@@ -15,6 +15,13 @@ spec:
 #                name: active-mq-service
 #                port:
 #                  number: 80
+          - path: /admin/(.*)
+            pathType: Exact
+            backend:
+              service:
+                name: admin-service
+                port:
+                  number: 80
           - path: /distribution/(.*)
             pathType: Exact
             backend:
