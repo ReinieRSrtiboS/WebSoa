@@ -55,6 +55,15 @@ services:
     ports:
       - "8080"
 
+  admin-service:
+    build:
+      dockerfile: ./admin-service/Dockerfile
+      context: ./
+    ports:
+      - "8080"
+    depends_on:
+      - event-service
+
   validation-service:
     build:
       dockerfile: ./validation-service/Dockerfile
