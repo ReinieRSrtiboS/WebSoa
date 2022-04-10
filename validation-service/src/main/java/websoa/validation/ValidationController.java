@@ -45,15 +45,4 @@ public class ValidationController {
         return writer.toString();
     }
 
-    @GetMapping("/")
-    public String test() {
-        StringWriter writer = new StringWriter();
-        Context context = new Context();
-
-        context.setVariable("success", false);
-
-        template.process("validate", context, writer);
-        return writer.toString();
-    }
-
 }
