@@ -30,9 +30,9 @@ public class TicketController {
     }
 
     @PutMapping("/activate/{ticket_id}")
-    public HttpStatus validate(@PathVariable String ticket_id) { // TODO give error status if goes wrong
+    public ResponseEntity<HttpStatus> validate(@PathVariable String ticket_id) { // TODO give error status if goes wrong
         this.registry.activate(ticket_id);
-        return HttpStatus.OK;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/reserve/{event_id}/{amount}")

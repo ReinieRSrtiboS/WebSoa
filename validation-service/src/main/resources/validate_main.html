@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Validate</title>
+</head>
+<body>
+<form action="http://validation-service/validate" method="post">
+  <label for="ticket_id">Ticket:     </label>
+  <input type="number" id="ticket_id" name="ticket_id" min="0"><br><br>
+  <label for="user_id">User:   </label>
+  <input type="number" id="user_id" name="user_id" min="0"><br><br>
+  <button type="submit">Validate</button>
+</form>
+</body>
+</html>

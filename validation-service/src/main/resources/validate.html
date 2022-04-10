@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Validation</title>
+</head>
+<body>
+<div th:switch="${success}" class="container">
+  <h2 th:case="false">Sukkel wat dacht je zelluf, ga naar de balie om daar te zeuren.</h2>
+  <h2 th:case="true">Success, you may enter</h2>
+  <br><br>
+  <a href="http://validation-service/validation_main/"><button>new Ticket</button>
+</body>
+</html>

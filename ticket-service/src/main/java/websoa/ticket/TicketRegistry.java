@@ -48,8 +48,7 @@ public class TicketRegistry {
     }
 
     public void activate(String ticket_id) { // Wordt nu niet lange termijn opgeslagen maar dat is TODO
-        TicketInfo ticket = this.tickets.get(ticket_id);
-        ticket.activated = true;
+        this.tickets.get(ticket_id).activated = true;
     }
 
     public ResponseEntity<HttpStatus> new_event(String event_id, float price, int amount) {
