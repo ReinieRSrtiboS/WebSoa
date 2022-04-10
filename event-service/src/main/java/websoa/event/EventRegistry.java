@@ -5,7 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import websoa.event.daos.Event;
 
 import javax.annotation.PostConstruct;
@@ -42,5 +47,15 @@ public class EventRegistry {
 
     public Optional<Event> event(String id) {
         return Optional.ofNullable(events.get(id));
+    }
+
+    public ResponseEntity<HttpStatus> create(String name, float price, int amount) {
+        String id = String.valueOf(this.events.size() + 1);
+        Event event = new Event(id, name, price, amount);
+        this.events.put(id, event);
+
+        RestTemplate rest = new RestTemplate();
+        return rest.exchange("http://ticket-service/create/" + id + "/" + price + "/" + amount,
+            HttpMethod.POST, new HttpEntity<>(HttpStatus.OK), HttpStatus.class);
     }
 }

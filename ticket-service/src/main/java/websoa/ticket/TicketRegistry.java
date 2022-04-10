@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import sun.security.krb5.internal.Ticket;
 import websoa.ticket.daos.TicketInfo;
@@ -51,9 +52,9 @@ public class TicketRegistry {
         ticket.activated = true;
     }
 
-    public HttpStatus new_event(String event_id, float price, int amount) {
+    public ResponseEntity<HttpStatus> new_event(String event_id, float price, int amount) {
         if (eventTickets.containsKey(event_id)) {
-            return HttpStatus.CONFLICT;
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         eventTickets.putIfAbsent(event_id, new ArrayList<>(1));
         for (int i = tickets.size(); i < tickets.size() + amount; i++) {
@@ -61,7 +62,7 @@ public class TicketRegistry {
             tickets.put(String.valueOf(i + 1), ticket);
             this.eventTickets.get(event_id).add(ticket);
         }
-        return HttpStatus.OK;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public boolean reserve(String event_id, int amount) {
