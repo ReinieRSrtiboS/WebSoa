@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import websoa.payment.daos.PaymentRequest;
 import websoa.payment.daos.PaymentResponse;
 
+import javax.annotation.PreDestroy;
 import java.util.*;
 
 @Slf4j
@@ -39,5 +40,14 @@ public class QueueReceiver {
         if (request == null) return Optional.empty();
         this.requests.remove(id);
         return Optional.of(request);
+    }
+
+    @PreDestroy
+    public void onShutDown() {
+        log.info("Resubmitting {} requests", requests.size());
+        for (PaymentRequest request : requests.values()) {
+            log.info("Resubmitting request {}", request.id);
+            template.convertAndSend("payment_requests", request);
+        }
     }
 }

@@ -11,8 +11,8 @@
   <ul class="w-96 divide-y divide-gray-200 rounded-lg bg-white">
     <li th:each="request : ${requests}" class="flex flex-row items-center gap-2 px-2 py-4">
       <div th:text="${request.id}" class="flex-grow"></div>
-      <button class="rounded-lg bg-green-200 p-2">Accept</button>
-      <button class="rounded-lg bg-red-200 p-2">Reject</button>
+      <button class="rounded-lg bg-green-200 text-green-900 p-2">Accept</button>
+      <button class="rounded-lg bg-red-200 text-red-900 p-2">Reject</button>
     </li>
   </ul>
 </div>
