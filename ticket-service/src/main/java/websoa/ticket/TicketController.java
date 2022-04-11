@@ -32,7 +32,7 @@ public class TicketController {
     @PutMapping("/activate/{ticket_id}/{user_id}")
     public ResponseEntity<HttpStatus> validate(@PathVariable String ticket_id, @PathVariable String user_id) {
         TicketInfo ticket = this.registry.ticket(ticket_id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found"));;
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found"));
         if (!ticket.activated && ticket.user_id.equals(user_id)) {
             ticket.activated = true;
             return new ResponseEntity<>(HttpStatus.OK);
@@ -43,11 +43,7 @@ public class TicketController {
 
     @PutMapping("/reserve/{event_id}/{amount}")
     public ResponseEntity<HttpStatus> reserve(@PathVariable String event_id, @PathVariable int amount) {
-        if (this.registry.reserve(event_id, amount)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+        return this.registry.reserve(event_id, amount);
     }
 
     @PostMapping("/create/{event_id}/{price}/{amount}")

@@ -60,7 +60,7 @@ public class TicketRegistry {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public boolean reserve(String event_id, int amount) {
+    public ResponseEntity<HttpStatus> reserve(String event_id, int amount) {
         List<TicketInfo> tickets = this.eventTickets.get(event_id);
         int reserved_no = 0;
         List<TicketInfo> reserve = new ArrayList<>();
@@ -70,13 +70,13 @@ public class TicketRegistry {
                 reserve.add(ticket);
                 reserved_no++;
                 if (reserved_no == amount) {
-                    return true;
+                    return new ResponseEntity<>(HttpStatus.OK);
                 }
             }
         }
         for (TicketInfo ticket : reserve) {
             ticket.reserved = false;
         }
-        return false;
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 }
