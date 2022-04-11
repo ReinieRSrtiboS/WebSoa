@@ -25,6 +25,8 @@ public class TicketRegistry {
 
     @Autowired
     private EventRegistry eventRegistry;
+    @Autowired
+    private PaymentService paymentService;
 
     private Map<String, List<TicketInfo>> eventTickets = new HashMap<>();
     private Map<String, TicketInfo> tickets;
@@ -79,8 +81,9 @@ public class TicketRegistry {
         List<TicketInfo> indexEntry = eventTickets.get(event_id);
 
         for (int i = 0; i < amount; i++) {
-            String id = String.format("E-%s-T-%d", event_id, indexEntry.size());
+            String id = String.format("E%s-T%d", event_id, indexEntry.size());
             TicketInfo ticket = new TicketInfo(event_id, id);
+            paymentService.request(id, event.price);
             tickets.put(id, ticket);
             indexEntry.add(ticket);
         }
