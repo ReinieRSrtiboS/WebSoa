@@ -2,13 +2,14 @@ package websoa.ticket;
 
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import sun.security.krb5.internal.Ticket;
+import websoa.ticket.daos.Event;
 import websoa.ticket.daos.TicketInfo;
 
 import javax.annotation.PostConstruct;
@@ -21,6 +22,9 @@ import java.util.*;
 public class TicketRegistry {
     @Value("classpath:tickets.json")
     private Resource dataFile;
+
+    @Autowired
+    private EventRegistry eventRegistry;
 
     private Map<String, List<TicketInfo>> eventTickets = new HashMap<>();
     private Map<String, TicketInfo> tickets;
@@ -48,35 +52,39 @@ public class TicketRegistry {
     }
 
     public ResponseEntity<HttpStatus> new_event(String event_id, float price, int amount) {
-        if (eventTickets.containsKey(event_id)) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        eventTickets.putIfAbsent(event_id, new ArrayList<>(1));
-        for (int i = tickets.size(); i < tickets.size() + amount; i++) {
-            TicketInfo ticket = new TicketInfo(event_id, price, String.valueOf(i + 1));
-            tickets.put(String.valueOf(i + 1), ticket);
-            this.eventTickets.get(event_id).add(ticket);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+        //TODO this doesn't work with new logic anymore
+        return null;
+//        if (eventTickets.containsKey(event_id)) {
+//            return new ResponseEntity<>(HttpStatus.CONFLICT);
+//        }
+//        eventTickets.putIfAbsent(event_id, new ArrayList<>(1));
+//        for (int i = tickets.size(); i < tickets.size() + amount; i++) {
+//            TicketInfo ticket = new TicketInfo(event_id, price, String.valueOf(i + 1));
+//            tickets.put(String.valueOf(i + 1), ticket);
+//            this.eventTickets.get(event_id).add(ticket);
+//        }
+//        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public boolean reserve(String event_id, int amount) {
-        List<TicketInfo> tickets = this.eventTickets.get(event_id);
-        int reserved_no = 0;
-        List<TicketInfo> reserve = new ArrayList<>();
-        for (TicketInfo ticket : tickets) {
-            if (!ticket.reserved) {
-                ticket.reserved = true;
-                reserve.add(ticket);
-                reserved_no++;
-                if (reserved_no == amount) {
-                    return true;
-                }
-            }
+        Event event = eventRegistry.find(event_id).orElseThrow(() -> new RuntimeException("Could not find requested event"));
+        int totalTickets = event.tickets;
+        int usedTickets = eventTickets.get(event_id).size();
+        int available = totalTickets - usedTickets;
+
+        log.info("Attempting to reserve tickets for event {}, [T={}, U={}, A={}]", event_id, totalTickets, usedTickets, available);
+        if (amount > available) return false;
+
+        eventTickets.putIfAbsent(event_id, new ArrayList<>(amount));
+        List<TicketInfo> indexEntry = eventTickets.get(event_id);
+
+        for (int i = 0; i < amount; i++) {
+            String id = String.format("E-%s-T-%d", event_id, indexEntry.size());
+            TicketInfo ticket = new TicketInfo(event_id, id);
+            tickets.put(id, ticket);
+            indexEntry.add(ticket);
         }
-        for (TicketInfo ticket : reserve) {
-            ticket.reserved = false;
-        }
-        return false;
+
+        return true;
     }
 }
