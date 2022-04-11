@@ -47,10 +47,6 @@ public class TicketRegistry {
         return Optional.ofNullable(tickets.get(id));
     }
 
-    public void activate(String ticket_id) { // Wordt nu niet lange termijn opgeslagen maar dat is TODO
-        this.tickets.get(ticket_id).activated = true;
-    }
-
     public ResponseEntity<HttpStatus> new_event(String event_id, float price, int amount) {
         if (eventTickets.containsKey(event_id)) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
