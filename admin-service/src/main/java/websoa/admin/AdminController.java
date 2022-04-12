@@ -57,4 +57,10 @@ public class AdminController {
         }
         return writer.toString();
     }
+
+    @GetMapping("/validate_main")
+    public String validate() {
+        RestTemplate rest = new RestTemplate();
+        return rest.getForObject("http://validation-service/validate_main", String.class);
+    }
 }
