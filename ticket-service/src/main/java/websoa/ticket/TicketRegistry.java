@@ -68,6 +68,13 @@ public class TicketRegistry {
 //        return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    public int get_available(String event_id) {
+        Event event = eventRegistry.find(event_id).orElseThrow(() -> new RuntimeException("Could not find requested event"));
+        int totalTickets = event.tickets;
+        int usedTickets = eventTickets.get(event_id).size();
+        return totalTickets - usedTickets;
+    }
+
     public boolean reserve(String event_id, int amount) {
         Event event = eventRegistry.find(event_id).orElseThrow(() -> new RuntimeException("Could not find requested event"));
         int totalTickets = event.tickets;

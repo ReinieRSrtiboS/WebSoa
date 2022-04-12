@@ -39,7 +39,7 @@ public class EventController {
     }
 
     @GetMapping("/")
-    public String showEvents(Model model) { // TODO get available tickets instead of all of bedenk een loop erom heen
+    public String showEvents(Model model) { // TODO get available tickets instead of all hier eigenlijk nog niet belangrijk
     StringWriter writer = new StringWriter();
     Context context = new Context();
 
@@ -54,9 +54,11 @@ public class EventController {
         Context context = new Context();
 
         RestTemplate rest = new RestTemplate();
-        TicketInfo[] result = rest.getForObject("http://ticket-service/tickets/" + event_id, TicketInfo[].class);
+//        TicketInfo[] result = rest.getForObject("http://ticket-service/tickets/" + event_id, TicketInfo[].class);
+        int amount = rest.getForObject("http://ticket-service/available/" + event_id, int.class);
 
-        context.setVariable("tickets", result.length);
+//        context.setVariable("tickets", result.length);
+        context.setVariable("tickets", amount);
         context.setVariable("event", this.registry.event(event_id).get());
         template.process("buy-tickets", context, writer);
         return writer.toString();

@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import websoa.ticket.daos.TicketInfo;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -21,6 +22,11 @@ public class TicketController {
         return this.registry.event_tickets(event_id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
 
+    }
+
+    @GetMapping("/available/{event_id}")
+    public int available_event_tickets(@PathVariable String event_id) {
+        return this.registry.get_available(event_id);
     }
 
     @GetMapping("/ticket/{id}")
