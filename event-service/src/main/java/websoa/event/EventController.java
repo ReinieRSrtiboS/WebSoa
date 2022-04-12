@@ -55,7 +55,7 @@ public class EventController {
 
         RestTemplate rest = new RestTemplate();
 //        TicketInfo[] result = rest.getForObject("http://ticket-service/tickets/" + event_id, TicketInfo[].class);
-        int amount = rest.getForObject("http://ticket-service/available/" + event_id, int.class);
+        int amount = rest.getForObject("http://ticket-service/event/" + event_id + "/available", int.class);
 
 //        context.setVariable("tickets", result.length);
         context.setVariable("tickets", amount);

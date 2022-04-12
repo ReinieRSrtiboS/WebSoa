@@ -24,7 +24,7 @@ public class TicketController {
 
     }
 
-    @GetMapping("/available/{event_id}")
+    @GetMapping("/event/{event_id}/available")
     public int available_event_tickets(@PathVariable String event_id) {
         return this.registry.get_available(event_id);
     }
