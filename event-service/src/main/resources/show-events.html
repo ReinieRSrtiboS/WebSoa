@@ -27,9 +27,7 @@
           <td th:text="${event.name}"></td>
           <td th:text="${event.tickets}"></td>
           <td th:text="${event.price}"></td>
-<!--          <td><a th:href="@{'http://localhost:8080/order/' + ${event.id}}"><button>Buy Tickets</button></a></td>-->
-<!--          <td><a th:href="@{http://localhost:8080/order/{id}(id=${event.id})}"><button>Buy Tickets</button></a></td>-->
-          <td><a th:href="@{http://event-service/order/{id}(id=${event.id})}"><button>Buy Tickets</button></a></td>
+          <td><a th:href="@{events/order/{id}(id=${event.id})}"><button>Buy Tickets</button></a></td>
         </tr>
         </tbody>
       </table>

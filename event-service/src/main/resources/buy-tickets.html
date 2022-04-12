@@ -15,8 +15,7 @@
       <h2>Buy tickets!</h2>
       <h2 th:text="'Available tickets for ' + ${event.name} + ' : ' + ${tickets}"></h2>
       <div th:text="'Price: ' + ${event.price}"></div>
-<!--      <form th:action="@{http://localhost:8080/buy/{id}(id=${event.id})}" method="get">-->
-      <form th:action="@{http://event-service/buy/{id}(id=${event.id})}" method="get">
+      <form th:action="@{events/buy/{id}(id=${event.id})}" method="get">
         <label for="tickets">Number of tickets:</label>
         <input type="number" id="tickets" name="tickets" min="1" max="100" th:max="${tickets}">
         <button type="submit">Buy Tickets</button>
