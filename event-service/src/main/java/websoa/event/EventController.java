@@ -39,7 +39,7 @@ public class EventController {
     }
 
     @GetMapping("/")
-    public String showEvents(Model model) { // TODO get available tickets instead of all hier eigenlijk nog niet belangrijk
+    public String showEvents(Model model) {
     StringWriter writer = new StringWriter();
     Context context = new Context();
 
