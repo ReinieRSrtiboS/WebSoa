@@ -54,8 +54,6 @@ public class EventRegistry {
         Event event = new Event(id, name, price, amount);
         this.events.put(id, event);
 
-        RestTemplate rest = new RestTemplate();
-        return rest.exchange("http://ticket-service/create/" + id + "/" + price + "/" + amount,
-            HttpMethod.POST, new HttpEntity<>(HttpStatus.OK), HttpStatus.class);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

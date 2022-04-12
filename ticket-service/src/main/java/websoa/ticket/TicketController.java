@@ -56,9 +56,4 @@ public class TicketController {
         }
     }
 
-    @PostMapping("/create/{event_id}/{price}/{amount}")
-    public ResponseEntity<HttpStatus> create(@PathVariable String event_id, @PathVariable float price, @PathVariable int amount) {
-        return this.registry.new_event(event_id, price, amount);
-    }
-
 }

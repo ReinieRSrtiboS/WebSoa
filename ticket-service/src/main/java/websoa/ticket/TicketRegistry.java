@@ -53,21 +53,6 @@ public class TicketRegistry {
         return Optional.ofNullable(tickets.get(id));
     }
 
-    public ResponseEntity<HttpStatus> new_event(String event_id, float price, int amount) {
-        //TODO this doesn't work with new logic anymore
-        return null;
-//        if (eventTickets.containsKey(event_id)) {
-//            return new ResponseEntity<>(HttpStatus.CONFLICT);
-//        }
-//        eventTickets.putIfAbsent(event_id, new ArrayList<>(1));
-//        for (int i = tickets.size(); i < tickets.size() + amount; i++) {
-//            TicketInfo ticket = new TicketInfo(event_id, price, String.valueOf(i + 1));
-//            tickets.put(String.valueOf(i + 1), ticket);
-//            this.eventTickets.get(event_id).add(ticket);
-//        }
-//        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     public int get_available(String event_id) {
         Event event = eventRegistry.find(event_id).orElseThrow(() -> new RuntimeException("Could not find requested event"));
         int totalTickets = event.tickets;
