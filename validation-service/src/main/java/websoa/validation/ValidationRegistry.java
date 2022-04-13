@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class ValidationRegistry {
 
-    public ResponseEntity<HttpStatus> validate(String ticket_id, String user_id) {
+    public ResponseEntity<HttpStatus> validate(String ticket_id, String user_id) { //TODO check here, not in ticket + add check for paid
         RestTemplate rest = new RestTemplate();
         return rest.exchange("http://ticket-service/activate/" + ticket_id + "/" + user_id,
             HttpMethod.PUT, new HttpEntity<>(HttpStatus.OK), HttpStatus.class);

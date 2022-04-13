@@ -58,9 +58,9 @@ public class AdminController {
         return writer.toString();
     }
 
-    @GetMapping("/validate_main")
+    @GetMapping("/validate")
     public String validate() {
         RestTemplate rest = new RestTemplate();
-        return rest.getForObject("http://validation-service/validate_main", String.class);
+        return rest.getForObject("http://validation-service/", String.class);
     }
 }

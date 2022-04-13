@@ -36,7 +36,7 @@ public class ValidationController {
         return writer.toString();
     }
 
-    @GetMapping("/validate_main")
+    @GetMapping("/")
     public String validate_main() {
         StringWriter writer = new StringWriter();
         Context context = new Context();

@@ -21,4 +21,7 @@ public class UserController {
         return this.registry.user(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
+
+    // TODO Update
+    // TODO Create
 }
