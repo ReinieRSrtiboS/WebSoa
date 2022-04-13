@@ -66,12 +66,8 @@ public class TicketRegistry {
 
     public boolean reserve(String event_id, int amount) {
         Event event = eventRegistry.find(event_id).orElseThrow(() -> new RuntimeException("Could not find requested event"));
-        int totalTickets = event.tickets;
-        int usedTickets = eventTickets.get(event_id).size();
-        int available = totalTickets - usedTickets;
 
-        log.info("Attempting to reserve tickets for event {}, [T={}, U={}, A={}]", event_id, totalTickets, usedTickets, available);
-        if (amount > available) return false;
+        if (amount > this.get_available(event_id)) return false;
 
         eventTickets.putIfAbsent(event_id, new ArrayList<>(amount));
         List<TicketInfo> indexEntry = eventTickets.get(event_id);
