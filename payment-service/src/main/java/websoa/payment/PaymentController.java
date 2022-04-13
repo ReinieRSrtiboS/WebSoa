@@ -3,6 +3,7 @@ package websoa.payment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import websoa.payment.daos.PaymentRequest;
 import websoa.payment.daos.PaymentResponse;
 
 import java.io.StringWriter;
+import java.net.URI;
 
 @Slf4j
 @RestController
@@ -35,24 +37,31 @@ public class PaymentController {
     }
 
     @PostMapping("/accept/{id}")
-    public String accept(@PathVariable String id) {
+    public ResponseEntity<?> accept(@PathVariable String id) {
         PaymentRequest request = this.queue.pop(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Payment not found"));
         PaymentResponse response = PaymentResponse.fromRequest(request);
         response.success();
         queue.respond(response);
         log.info("Accepted payment request {}", request.id);
-        return "Accepted";
+        return this.redirect("/payment/");
     }
 
     @PostMapping("/reject/{id}")
-    public String reject(@PathVariable String id) {
+    public ResponseEntity<?> reject(@PathVariable String id) {
         PaymentRequest request = this.queue.pop(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Payment not found"));
         PaymentResponse response = PaymentResponse.fromRequest(request);
         response.failed();
         queue.respond(response);
         log.info("Rejected payment request {}", request.id);
-        return "Rejected";
+        return this.redirect("/payment/");
+    }
+
+    private ResponseEntity<?> redirect(String uri) {
+        return ResponseEntity
+            .status(HttpStatus.FOUND)
+            .location(URI.create(uri))
+            .build();
     }
 }

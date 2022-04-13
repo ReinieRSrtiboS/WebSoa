@@ -9,10 +9,17 @@
 <div class="flex min-h-screen w-full flex-col items-center bg-gray-100">
   <h1 class="my-6 text-xl">Pending payment requests</h1>
   <ul class="w-96 divide-y divide-gray-200 rounded-lg bg-white">
-    <li th:each="request : ${requests}" class="flex flex-row items-center gap-2 px-2 py-4">
-      <div th:text="${request.id}" class="flex-grow"></div>
-      <button class="rounded-lg bg-green-200 text-green-900 p-2">Accept</button>
-      <button class="rounded-lg bg-red-200 text-red-900 p-2">Reject</button>
+    <li th:each="request : ${requests}" class="flex flex-row items-center gap-2 p-4 pr-2">
+      <div class="flex-grow">
+        <span th:text="${request.id}"></span>
+        <span th:text="|&euro; ${#numbers.formatDecimal(request.amount, 1, 2)}|" class="ml-2 text-sm text-gray-500"></span>
+      </div>
+      <form th:action="|/payment/accept/${request.id}|" method="POST" class="mb-0">
+        <button type="submit" class="rounded-lg bg-green-200 text-green-900 p-2">Accept</button>
+      </form>
+      <form th:action="|/payment/reject/${request.id}|" method="POST" class="mb-0">
+        <button type="submit" class="rounded-lg bg-red-200 text-red-900 p-2">Reject</button>
+      </form>
     </li>
   </ul>
 </div>
