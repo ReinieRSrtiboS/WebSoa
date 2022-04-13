@@ -5,8 +5,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import websoa.event.daos.Event;
@@ -39,13 +39,13 @@ public class EventController {
     }
 
     @GetMapping("/")
-    public String showEvents(Model model) {
-    StringWriter writer = new StringWriter();
-    Context context = new Context();
+    public String showEvents() {
+        StringWriter writer = new StringWriter();
+        Context context = new Context();
 
-    context.setVariable("events", this.registry.events());
-    template.process("show-events", context, writer);
-    return writer.toString();
+        context.setVariable("events", this.registry.events());
+        template.process("show-events", context, writer);
+        return writer.toString();
     }
 
     @GetMapping("/order/{event_id}")

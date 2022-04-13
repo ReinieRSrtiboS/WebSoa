@@ -1,37 +1,36 @@
 <!DOCTYPE html>
-<html>
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-</html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Events</title>
+  <!-- Having this script in the header prevents FOUC -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<div
-  <div th:switch="${events}" class="container">
-    <h2 th:case="null">No events yet!</h2>
-    <div th:case="*">
-      <h2>Events</h2>
-      <table class="table">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Tickets</th>
-          <th>Price</th>
-          <th>Buy Tickets</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="event : ${events}">
-          <td th:text="${event.name}"></td>
-          <td th:text="${event.tickets}"></td>
-          <td th:text="${event.price}"></td>
-          <td><a th:href="@{events/order/{id}(id=${event.id})}"><button>Buy Tickets</button></a></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+<div class="flex min-h-screen w-full flex-col items-center bg-gray-100">
+  <h1 class="my-6 text-xl">Events</h1>
+
+  <table>
+    <thead>
+    <tr>
+      <td class="pl-4 pb-4 font-semibold">Name</td>
+      <td class="pb-4 font-semibold">Price</td>
+      <td></td>
+    </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-300">
+    <tr th:each="event: ${events}">
+      <td class="pl-4 pr-8">
+        <div th:text="${event.name}"></div>
+        <div th:text="|${event.tickets} tickets|" class="text-xs text-gray-700"></div>
+      </td>
+      <td th:text="|&euro; ${#numbers.formatDecimal(event.price, 1, 2)}|" class="pr-8 text-right"></td>
+      <td class="py-4 pr-4">
+        <a th:href="|/events/order/${event.id}|" class="rounded-lg bg-green-200 p-2 text-green-900">Buy now!</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 </body>
 </html>
