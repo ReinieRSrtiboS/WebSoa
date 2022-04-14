@@ -50,8 +50,10 @@ public class UserController {
         StringWriter writer = new StringWriter();
         Context context = new Context();
 
-        if (this.registry.password(name, password)) {
-            return "success";
+        Optional<User> user = this.registry.get_name(name);
+        if (user.isPresent() && user.get().password.equals(password)) {
+            context.setVariable("user", user.get());
+            template.process("testing", context, writer);
         } else {
             context.setVariable("tried", true);
             template.process("login", context, writer);
@@ -65,8 +67,8 @@ public class UserController {
         Context context = new Context();
 
         if (this.registry.create(name, password, phone, email)) {
-            template.process("login", context, writer);
             context.setVariable("created", true);
+            template.process("login", context, writer);
         } else {
             context.setVariable("tried", true);
             template.process("sign-up", context, writer);
@@ -74,5 +76,34 @@ public class UserController {
         return writer.toString();
     }
 
-    // TODO Update
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable String id) {
+        StringWriter writer = new StringWriter();
+        Context context = new Context();
+
+        User user = this.registry.user(id).get();
+
+        context.setVariable("user", user);
+        template.process("edit", context, writer);
+
+        return writer.toString();
+    }
+
+    @PostMapping("/edited/{id}")
+    public String update(@PathVariable String id, @RequestParam String name, @RequestParam String password, @RequestParam String phone, @RequestParam String email) {
+        StringWriter writer = new StringWriter();
+        Context context = new Context();
+
+        if (this.registry.update(id, name, password, phone, email)) {
+            context.setVariable("user", this.registry.user(id).get());
+            template.process("testing", context, writer);
+        } else {
+            context.setVariable("tried", true);
+            context.setVariable("user", this.registry.user(id).get());
+            template.process("edit", context, writer);
+        }
+
+
+        return writer.toString();
+    }
 }

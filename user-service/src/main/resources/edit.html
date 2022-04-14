@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Having this script in the header prevents FOUC -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Edit</title>
+</head>
+<body>
+<div class="flex min-h-screen w-full flex-col items-center bg-gray-100">
+  <h1 class="my-6 text-xl">Edit your profile</h1>
+  <div class="container-signup">
+    <div th:switch="${tried}" class="wrap-error">
+      <span th:case="true" class="rounded-none bg-red-200 p-2">Username already in use</span>
+    </div>
+    <div class="wrap-signup">
+      <form class="signup-form" th:action="|http://localhost:8080/edited/${user.id}|" method="post">
+        <div class="wrap-signup">
+          <input class="signup" type="text" id="name" name="name" th:value="${user.name}">
+        </div><br>
+        <div class="signup">
+          <input class="signup" type="text" id="password" name="password" placeholder="Password">
+        </div><br>
+        <div class="signup">
+          <input class="signup" type="text" id="phone" name="phone" th:value="${user.phone}">
+        </div><br>
+        <div class="signup">
+          <input class="signup" type="text" id="email" name="email" th:value="${user.email}">
+        </div><br>
+        <div class="wrap-signup-form-btn">
+          <button class="rounded-lg bg-blue-200 p-2 text-green-900"> Edit </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

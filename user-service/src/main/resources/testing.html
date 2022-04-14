@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Having this script in the header prevents FOUC -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #element1 {display:inline-block;}
+    #element2 {display:inline-block;}
+    #element3 {display:inline-block;}
+  </style>
+  <title>Testing</title>
+</head>
+<body>
+<div class="header">
+  <div id="element1">
+    <p th:text="'Welcome ' + ${user.name}"></p>
+  </div>
+  <div id="element2">
+    <a th:href="|http://localhost:8080/edit/${user.id}|" class="rounded-lg bg-green-200 p-2">Edit profile</a>
+  </div>
+  <div id="element3">
+    <button class="rounded-lg bg-blue-200 p-2" href="http://localhost:8080">Log out</button>
+  </div>
+</div>
+
+Testing in progress
+</body>
+</html>

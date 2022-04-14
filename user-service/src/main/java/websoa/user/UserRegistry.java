@@ -43,6 +43,10 @@ public class UserRegistry {
         return user.map(value -> value.password.equals(password)).orElse(false);
     }
 
+    public Optional<User> get_name(String name) {
+        return Optional.ofNullable(this.usernames.get(name));
+    }
+
     public boolean create(String name, String password, String phone, String email) {
         if (this.usernames.containsKey(name)) {
             return false;
@@ -52,5 +56,20 @@ public class UserRegistry {
             this.usernames.put(name, user);
             return true;
         }
+    }
+
+    public boolean update(String id, String name, String  password, String phone, String email) {
+        User user = this.users.get(id);
+        if (this.usernames.containsKey(name) && !user.name.equals(name)) {
+            return false;
+        } else {
+            user.name = name;
+            user.phone = phone;
+            user.email = email;
+            if (!password.equals("")) {
+                user.password = password;
+            }
+        }
+        return true;
     }
 }
