@@ -3,10 +3,7 @@ package websoa.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -25,11 +22,20 @@ public class UserController {
     private TemplateEngine template;
 
     @GetMapping("/")
-    public String main(Model model) {
+    public String main() {
         StringWriter writer = new StringWriter();
         Context context = new Context();
 
         template.process("login", context, writer);
+        return writer.toString();
+    }
+
+    @GetMapping("/sign-up")
+    public String sign_up() {
+        StringWriter writer = new StringWriter();
+        Context context = new Context();
+
+        template.process("sign-up", context, writer);
         return writer.toString();
     }
 
@@ -53,6 +59,20 @@ public class UserController {
         return writer.toString();
     }
 
+    @PostMapping("/create")
+    public String create(@RequestParam String name, @RequestParam String password, @RequestParam String phone, @RequestParam String email) {
+        StringWriter writer = new StringWriter();
+        Context context = new Context();
+
+        if (this.registry.create(name, password, phone, email)) {
+            template.process("login", context, writer);
+            context.setVariable("created", true);
+        } else {
+            context.setVariable("tried", true);
+            template.process("sign-up", context, writer);
+        }
+        return writer.toString();
+    }
+
     // TODO Update
-    // TODO Create
 }

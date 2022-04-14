@@ -42,4 +42,15 @@ public class UserRegistry {
         Optional<User> user = Optional.ofNullable(this.usernames.get(name));
         return user.map(value -> value.password.equals(password)).orElse(false);
     }
+
+    public boolean create(String name, String password, String phone, String email) {
+        if (this.usernames.containsKey(name)) {
+            return false;
+        } else {
+            User user = new User(String.valueOf(this.users.size() + 1), name, password, email, phone);
+            this.users.put(user.id, user);
+            this.usernames.put(name, user);
+            return true;
+        }
+    }
 }
