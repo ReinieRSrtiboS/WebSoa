@@ -12,7 +12,9 @@ minikube kubectl -- apply -f ingress.yml
 
 # Launch pre-build docker images
 minikube kubectl -- apply -f mailhog.yml
-minikube kubectl -- rollout restart mailhog-deployment
+minikube kubectl -- rollout restart deployment mailhog-deployment
+minikube kubectl -- apply -f postgres.yml
+minikube kubectl -- rollout restart deployment postgres
 
 # Build & launch required docker images
 docker build -t "websoa-active-mq:latest" -f ./active-mq/Dockerfile ./
