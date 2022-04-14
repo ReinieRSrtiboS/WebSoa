@@ -15,6 +15,7 @@ import websoa.ticket.daos.TicketInfo;
 import javax.annotation.PostConstruct;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Service
@@ -29,6 +30,7 @@ public class TicketRegistry {
     private PaymentService paymentService;
 
     private Map<String, List<TicketInfo>> eventTickets = new HashMap<>();
+    private Map<String, AtomicInteger> counters = new HashMap<>();
     private Map<String, TicketInfo> tickets;
 
     @PostConstruct
@@ -70,10 +72,12 @@ public class TicketRegistry {
         if (amount > this.get_available(event_id)) return false;
 
         eventTickets.putIfAbsent(event_id, new ArrayList<>(amount));
+        counters.putIfAbsent(event_id, new AtomicInteger(1));
         List<TicketInfo> indexEntry = eventTickets.get(event_id);
+        AtomicInteger counter = counters.get(event_id);
 
         for (int i = 0; i < amount; i++) {
-            String id = String.format("E%s-T%d", event_id, indexEntry.size());
+            String id = String.format("E%s-T%d", event_id, counter.getAndIncrement());
             TicketInfo ticket = new TicketInfo(event_id, id);
             paymentService.request(id, event.price);
             tickets.put(id, ticket);
