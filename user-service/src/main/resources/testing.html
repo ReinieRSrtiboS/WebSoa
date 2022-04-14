@@ -17,10 +17,10 @@
     <p th:text="'Welcome ' + ${user.name}"></p>
   </div>
   <div id="element2">
-    <a th:href="|http://localhost:8080/edit/${user.id}|" class="rounded-lg bg-green-200 p-2">Edit profile</a>
+    <a th:href="|/user/edit/${user.id}|" class="rounded-lg bg-green-200 p-2">Edit profile</a>
   </div>
   <div id="element3">
-    <button class="rounded-lg bg-blue-200 p-2" href="http://localhost:8080">Log out</button>
+    <button class="rounded-lg bg-blue-200 p-2" href="/user/">Log out</button>
   </div>
 </div>
 

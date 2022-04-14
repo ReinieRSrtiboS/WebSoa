@@ -14,7 +14,8 @@
       <span th:case="true" class="rounded-none bg-red-200 p-2">Username already in use</span>
     </div>
     <div class="wrap-signup">
-      <form class="signup-form" th:action="|http://localhost:8080/edited/${user.id}|" method="post">
+      <br>
+      <form class="signup-form" th:action="|/user/edited/${user.id}|" method="post">
         <div class="wrap-signup">
           <input class="signup" type="text" id="name" name="name" th:value="${user.name}">
         </div><br>
