@@ -41,7 +41,16 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(@RequestParam String name, @RequestParam String password) {
-        return name;
+        StringWriter writer = new StringWriter();
+        Context context = new Context();
+
+        if (this.registry.password(name, password)) {
+            return "success";
+        } else {
+            context.setVariable("tried", true);
+            template.process("login", context, writer);
+        }
+        return writer.toString();
     }
 
     // TODO Update

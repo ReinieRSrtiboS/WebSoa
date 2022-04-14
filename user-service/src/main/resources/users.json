@@ -2,18 +2,21 @@
   {
     "id": 1,
     "name": "Luis",
+    "password": "1234",
     "email": "luis@websoa.ut",
     "phone": "0641414141"
   },
   {
     "id": 2,
     "name": "Joao",
+    "password": "12345",
     "email": "joao@websoa.ut",
     "phone": "0642424242"
   },
   {
     "id": 3,
     "name": "Leon",
+    "password": "1234",
     "email": "leon@websoa.ut",
     "phone": "0643434343"
   }

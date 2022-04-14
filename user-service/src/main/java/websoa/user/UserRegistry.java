@@ -3,7 +3,9 @@ package websoa.user;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import websoa.user.daos.User;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +18,7 @@ public class UserRegistry {
     private Resource dataFile;
 
     private Map<String, User> users;
+    private Map<String, User> usernames;
 
     @PostConstruct
     public void postConstruct() throws Exception {
@@ -24,12 +27,19 @@ public class UserRegistry {
         User[] users = parser.fromJson(isr, User[].class);
 
         this.users = new HashMap<>(users.length);
+        this.usernames = new HashMap<>(users.length);
         for (User user : users) {
             this.users.put(user.id, user);
+            this.usernames.put(user.name, user);
         }
     }
 
     public Optional<User> user(String id) {
         return Optional.ofNullable(users.get(id));
+    }
+
+    public boolean password(String name, String password) {
+        Optional<User> user = Optional.ofNullable(this.usernames.get(name));
+        return user.map(value -> value.password.equals(password)).orElse(false);
     }
 }
