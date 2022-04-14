@@ -36,6 +36,13 @@ spec:
                 name: event-service
                 port:
                   number: 80
+          - path: /mailhog/(.*)
+            pathType: Exact
+            backend:
+              service:
+                name: mailhog
+                port:
+                  number: 80
           - path: /payment/(.*)
             pathType: Exact
             backend:
