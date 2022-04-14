@@ -23,20 +23,12 @@ public class UserController {
 
     @GetMapping("/")
     public String main() {
-        StringWriter writer = new StringWriter();
-        Context context = new Context();
-
-        template.process("login", context, writer);
-        return writer.toString();
+        return this.render("login");
     }
 
     @GetMapping("/sign-up")
     public String sign_up() {
-        StringWriter writer = new StringWriter();
-        Context context = new Context();
-
-        template.process("sign-up", context, writer);
-        return writer.toString();
+        return this.render("sign-up");
     }
 
     @GetMapping("/user/{id}")
@@ -47,63 +39,59 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(@RequestParam String name, @RequestParam String password) {
-        StringWriter writer = new StringWriter();
         Context context = new Context();
 
         Optional<User> user = this.registry.get_name(name);
         if (user.isPresent() && user.get().password.equals(password)) {
             context.setVariable("user", user.get());
-            template.process("testing", context, writer);
+            return this.render("testing", context);
         } else {
             context.setVariable("tried", true);
-            template.process("login", context, writer);
+            return this.render("login", context);
         }
-        return writer.toString();
     }
 
     @PostMapping("/create")
     public String create(@RequestParam String name, @RequestParam String password, @RequestParam String phone, @RequestParam String email) {
-        StringWriter writer = new StringWriter();
         Context context = new Context();
 
         if (this.registry.create(name, password, phone, email)) {
             context.setVariable("created", true);
-            template.process("login", context, writer);
+            return this.render("login", context);
         } else {
             context.setVariable("tried", true);
-            template.process("sign-up", context, writer);
+            return this.render("sign-up", context);
         }
-        return writer.toString();
     }
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable String id) {
-        StringWriter writer = new StringWriter();
         Context context = new Context();
-
-        User user = this.registry.user(id).get();
-
-        context.setVariable("user", user);
-        template.process("edit", context, writer);
-
-        return writer.toString();
+        context.setVariable("user", this.registry.user(id).get());
+        return this.render("edit", context);
     }
 
     @PostMapping("/edited/{id}")
     public String update(@PathVariable String id, @RequestParam String name, @RequestParam String password, @RequestParam String phone, @RequestParam String email) {
-        StringWriter writer = new StringWriter();
         Context context = new Context();
 
         if (this.registry.update(id, name, password, phone, email)) {
             context.setVariable("user", this.registry.user(id).get());
-            template.process("testing", context, writer);
+            return this.render("testing", context);
         } else {
             context.setVariable("tried", true);
             context.setVariable("user", this.registry.user(id).get());
-            template.process("edit", context, writer);
+            return this.render("edit", context);
         }
+    }
 
+    private String render(String name) {
+        return this.render(name, new Context());
+    }
 
+    private String render(String name, Context context) {
+        StringWriter writer = new StringWriter();
+        this.template.process(name, context, writer);
         return writer.toString();
     }
 }
