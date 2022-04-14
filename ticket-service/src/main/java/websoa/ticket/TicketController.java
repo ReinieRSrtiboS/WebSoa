@@ -35,16 +35,12 @@ public class TicketController {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found"));
     }
 
-    @PutMapping("/activate/{ticket_id}/{user_id}")
-    public ResponseEntity<HttpStatus> validate(@PathVariable String ticket_id, @PathVariable String user_id) {
+    @PutMapping("/activate/{ticket_id}")
+    public ResponseEntity<HttpStatus> validate(@PathVariable String ticket_id) {
         TicketInfo ticket = this.registry.ticket(ticket_id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found"));
-        if (!ticket.activated && ticket.user_id.equals(user_id)) {
-            ticket.activated = true;
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+        ticket.activated = true;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/reserve/{event_id}/{amount}")
