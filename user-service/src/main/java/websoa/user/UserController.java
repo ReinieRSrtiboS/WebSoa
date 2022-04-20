@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -31,6 +32,11 @@ public class UserController {
         return this.render("sign-up");
     }
 
+    @GetMapping("/test")
+    public String test() {
+        return this.render("testing");
+    }
+
     @GetMapping("/user/{id}")
     public User user(@PathVariable String id) {
         return this.registry.user(id)
@@ -43,8 +49,8 @@ public class UserController {
 
         Optional<User> user = this.registry.get_name(name);
         if (user.isPresent() && user.get().password.equals(password)) {
-            context.setVariable("user", user.get());
-            return this.render("testing", context);
+            RestTemplate rest = new RestTemplate();
+            return rest.getForObject("http://events-service/" + user.get().id, String.class);
         } else {
             context.setVariable("tried", true);
             return this.render("login", context);
@@ -76,8 +82,8 @@ public class UserController {
         Context context = new Context();
 
         if (this.registry.update(id, name, password, phone, email)) {
-            context.setVariable("user", this.registry.user(id).get());
-            return this.render("testing", context);
+            RestTemplate rest = new RestTemplate();
+            return rest.getForObject("http://events-service/" + id, String.class);
         } else {
             context.setVariable("tried", true);
             context.setVariable("user", this.registry.user(id).get());
