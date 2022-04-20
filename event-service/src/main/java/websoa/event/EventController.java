@@ -1,5 +1,6 @@
 package websoa.event;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -17,8 +18,8 @@ import websoa.event.daos.User;
 
 import java.io.StringWriter;
 import java.util.Collection;
-import java.util.HashMap;
 
+@Slf4j
 @RestController
 public class EventController {
 
@@ -75,17 +76,16 @@ public class EventController {
 
     @GetMapping("/buy/{event}/{user}")
     public String buy(@PathVariable String event, @PathVariable String user, @RequestParam int tickets) {
-
         RestTemplate rest = new RestTemplate();
-        ResponseEntity<HttpStatus> answer = rest.exchange("http://ticket-service/reserve/" + event + "/" + tickets + "/" + user,
-            HttpMethod.PUT, new HttpEntity<>(HttpStatus.OK), HttpStatus.class);
 
-        if (answer.getStatusCode().is2xxSuccessful()) {
+        try {
+            ResponseEntity<HttpStatus> answer = rest.exchange("http://ticket-service/reserve/" + event + "/" + tickets + "/" + user, HttpMethod.PUT, new HttpEntity<>(HttpStatus.OK), HttpStatus.class);
             String name = this.registry.event(event).get().name;
             return "You have successfully reserved " + tickets + " tickets for " + name + ". \r\n" +
                 "After you have paid, the tickets will be sent to you per email";
-        } else {
-            return answer.getStatusCode().toString();
+        } catch (RestClientException exception) {
+            log.warn("RCE: {}", exception.getMessage(), exception);
+            return "Tickets could not be reserved, they have been sold out";
         }
     }
 

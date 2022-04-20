@@ -86,4 +86,10 @@ public class TicketRegistry {
 
         return true;
     }
+
+    public void remove(String id) {
+        TicketInfo ticket = this.tickets.get(id);
+        this.eventTickets.get(ticket.event_id).remove(ticket);
+        this.tickets.remove(ticket.id);
+    }
 }

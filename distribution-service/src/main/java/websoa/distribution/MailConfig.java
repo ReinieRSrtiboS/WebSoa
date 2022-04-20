@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 public class MailConfig {
     @Bean
     public JavaMailSender getSender() {
-        JavaMailSenderImpl sender=new JavaMailSenderImpl();
+        JavaMailSenderImpl sender = new JavaMailSenderImpl();
         sender.setHost("mailhog");
-        sender.setPort(1025);
+        sender.setPort(25);
 
         return sender;
     }
