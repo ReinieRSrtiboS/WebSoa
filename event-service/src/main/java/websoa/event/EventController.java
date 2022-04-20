@@ -73,7 +73,7 @@ public class EventController {
         return writer.toString();
     }
 
-    @GetMapping("/buy/{event}/{user}") // TODO add user
+    @GetMapping("/buy/{event}/{user}")
     public String buy(@PathVariable String event, @PathVariable String user, @RequestParam int tickets) {
 
         RestTemplate rest = new RestTemplate();
