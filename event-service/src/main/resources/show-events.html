@@ -7,6 +7,19 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+
+<div class="header">
+  <div id="element1">
+    <p th:text="'Welcome ' + ${user.name}"></p>
+  </div>
+  <div id="element2">
+    <a th:href="|/user/edit/${user.id}|" class="rounded-lg bg-green-200 p-2">Edit profile</a>
+  </div>
+  <div id="element3">
+    <a class="rounded-lg bg-blue-200 p-2" href="/user/">Log out</a>
+  </div>
+</div>
+
 <div class="flex min-h-screen w-full flex-col items-center bg-gray-100">
   <h1 class="my-6 text-xl">Events</h1>
 
@@ -26,7 +39,7 @@
       </td>
       <td th:text="|&euro; ${#numbers.formatDecimal(event.price, 1, 2)}|" class="pr-8 text-right"></td>
       <td class="py-4 pr-4">
-        <a th:href="|/events/order/${event.id}|" class="rounded-lg bg-green-200 p-2 text-green-900">Buy now!</a>
+        <a th:href="|/events/order/${event.id}/${user.id}|" class="rounded-lg bg-green-200 p-2 text-green-900">Buy now!</a>
       </td>
     </tr>
     </tbody>

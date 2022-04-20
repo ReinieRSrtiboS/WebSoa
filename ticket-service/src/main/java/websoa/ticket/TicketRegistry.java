@@ -66,7 +66,7 @@ public class TicketRegistry {
         }
     }
 
-    public boolean reserve(String event_id, int amount) {
+    public boolean reserve(String event_id, int amount, String user_id) {
         Event event = eventRegistry.find(event_id).orElseThrow(() -> new RuntimeException("Could not find requested event"));
 
         if (amount > this.get_available(event_id)) return false;
@@ -78,7 +78,7 @@ public class TicketRegistry {
 
         for (int i = 0; i < amount; i++) {
             String id = String.format("E%s-T%d", event_id, counter.getAndIncrement());
-            TicketInfo ticket = new TicketInfo(event_id, id);
+            TicketInfo ticket = new TicketInfo(event_id, id, user_id);
             paymentService.request(id, event.price);
             tickets.put(id, ticket);
             indexEntry.add(ticket);

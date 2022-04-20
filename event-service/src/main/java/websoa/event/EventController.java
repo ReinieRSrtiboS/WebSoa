@@ -13,6 +13,7 @@ import websoa.event.daos.Event;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import websoa.event.daos.TicketInfo;
+import websoa.event.daos.User;
 
 import java.io.StringWriter;
 import java.util.Collection;
@@ -38,37 +39,46 @@ public class EventController {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
     }
 
-    @GetMapping("/")
-    public String showEvents() {
+    @GetMapping("/{user_id}")
+    public String showEvents(@PathVariable String user_id) {
         StringWriter writer = new StringWriter();
         Context context = new Context();
+
+
+        RestTemplate rest = new RestTemplate();
+        User user = rest.getForObject("http://user-service/user/" + user_id, User.class);
+
+        context.setVariable("user", user);
 
         context.setVariable("events", this.registry.events());
         template.process("show-events", context, writer);
         return writer.toString();
     }
 
-    @GetMapping("/order/{event_id}")
-    public String order(@PathVariable String event_id) {
+    @GetMapping("/order/{event_id}/{user_id}")
+    public String order(@PathVariable String event_id, @PathVariable String user_id) {
         StringWriter writer = new StringWriter();
         Context context = new Context();
 
         RestTemplate rest = new RestTemplate();
 //        TicketInfo[] result = rest.getForObject("http://ticket-service/tickets/" + event_id, TicketInfo[].class);
+        User user = rest.getForObject("http://user-service/user/" + user_id, User.class);
         int amount = rest.getForObject("http://ticket-service/event/" + event_id + "/available", int.class);
 
 //        context.setVariable("tickets", result.length);
+        context.setVariable("user", user);
         context.setVariable("tickets", amount);
         context.setVariable("event", this.registry.event(event_id).get());
         template.process("buy-tickets", context, writer);
         return writer.toString();
     }
 
-    @GetMapping("/buy/{event}") // TODO add user
-    public String buy(@PathVariable String event, @RequestParam int tickets) {
+    @GetMapping("/buy/{event}/{user}") // TODO add user
+    public String buy(@PathVariable String event, @PathVariable String user, @RequestParam int tickets) {
 
         RestTemplate rest = new RestTemplate();
-        ResponseEntity<HttpStatus> answer = rest.exchange("http://ticket-service/reserve/" + event + "/" + tickets, HttpMethod.PUT, new HttpEntity<>(HttpStatus.OK), HttpStatus.class);
+        ResponseEntity<HttpStatus> answer = rest.exchange("http://ticket-service/reserve/" + event + "/" + tickets + "/" + user,
+            HttpMethod.PUT, new HttpEntity<>(HttpStatus.OK), HttpStatus.class);
 
         if (answer.getStatusCode().is2xxSuccessful()) {
             String name = this.registry.event(event).get().name;
