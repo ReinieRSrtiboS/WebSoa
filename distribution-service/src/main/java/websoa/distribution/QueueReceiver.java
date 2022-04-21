@@ -29,29 +29,33 @@ public class QueueReceiver {
     public void receive(PaymentResponse response) {
         log.info("Received payment result {}: {}", response.id, response.success ? "accepted" : "rejected");
 
+        Ticket ticket = template.getForObject("http://ticket-service/ticket/" + response.id, Ticket.class);
+        User user = template.getForEntity("http://user-service/user/{user}", User.class, ticket.user_id).getBody();
+        Event event = template.getForEntity("http://event-service/events/{event}", Event.class, ticket.event_id).getBody();
+        log.info("Retrieved details for {}", ticket.id);
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("event-system@websoa.ut");
+        message.setTo(user.email);
+
         if (response.success) {
-            Ticket ticket = template.patchForObject(
+            ticket = template.patchForObject(
                 "http://ticket-service/ticket/" + response.id,
                 Collections.singletonMap("paid", true),
                 Ticket.class
             );
             log.info("Updated ticket {}", ticket.id);
 
-            User user = template.getForEntity("http://user-service/user/{user}", User.class, ticket.user_id).getBody();
-            Event event = template.getForEntity("http://event-service/events/{event}", Event.class, ticket.event_id).getBody();
-            log.info("Retrieved details for {}", ticket.id);
-
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("event-system@websoa.ut");
-            message.setTo(user.email);
             message.setSubject("Your ticket for " + event.name);
             message.setText(String.format("Hey %s,\nHere is your ticket for %s!\n>> %s <<\nGL;HF!", user.name, event.name, ticket.id));
             log.info("Composed email for {}", ticket.id);
-
-            mailer.send(message);
-            log.info("Sent email for {}", ticket.id);
         } else {
+            message.setSubject(String.format("Your ticket for %s has been cancelled", event.name));
+            message.setText(String.format("Hey %s,\nYour ticket for %s has been cancelled.\nToo bad you're not attending this awesome party", user.name, event.name));
             template.delete("http://ticket-service/ticket/" + response.id);
         }
+
+        mailer.send(message);
+        log.info("Sent email for {}", ticket.id);
     }
 }
