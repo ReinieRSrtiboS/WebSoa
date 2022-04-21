@@ -50,7 +50,7 @@ public class UserController {
         Optional<User> user = this.registry.get_name(name);
         if (user.isPresent() && user.get().password.equals(password)) {
             RestTemplate rest = new RestTemplate();
-            return rest.getForObject("http://events-service/" + user.get().id, String.class);
+            return rest.getForObject("http://event-service/" + user.get().id, String.class);
         } else {
             context.setVariable("tried", true);
             return this.render("login", context);

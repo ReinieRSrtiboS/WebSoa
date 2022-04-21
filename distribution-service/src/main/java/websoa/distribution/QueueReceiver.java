@@ -45,7 +45,7 @@ public class QueueReceiver {
             message.setFrom("event-system@websoa.ut");
             message.setTo(user.email);
             message.setSubject("Your ticket for " + event.name);
-            message.setText(String.format("Hey %s,\nHere is your ticket for %s!\n>> %s <<\nGL;HF!", user.name, ticket.id, event.name));
+            message.setText(String.format("Hey %s,\nHere is your ticket for %s!\n>> %s <<\nGL;HF!", user.name, event.name, ticket.id));
             log.info("Composed email for {}", ticket.id);
 
             mailer.send(message);
