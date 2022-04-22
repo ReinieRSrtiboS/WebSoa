@@ -92,4 +92,8 @@ public class TicketRegistry {
         this.eventTickets.get(ticket.event_id).remove(ticket);
         this.tickets.remove(ticket.id);
     }
+
+    public void insertEvent(Event event) {
+        this.eventTickets.putIfAbsent(event.id, new ArrayList<>(0));
+    }
 }
